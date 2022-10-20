@@ -11,9 +11,9 @@ export class RedisService extends Client implements OnModuleDestroy {
     readonly config: ConfigType<typeof redisConfig>,
   ) {
     super();
-    async () => {
+    (async () => {
       await this.open(config.url);
-    };
+    })();
   }
   async onModuleDestroy() {
     await this.close();
