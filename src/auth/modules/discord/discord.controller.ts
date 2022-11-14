@@ -3,7 +3,7 @@ import { User } from '@prisma/client';
 import { Response } from 'express';
 import { IAuthService } from 'src/auth/services/auth.service.interface';
 import { GetUser, SERVICES } from 'src/common';
-import { DiscordOAuth2Guard } from './discord.guard';
+import { DiscordOAuth2Guard } from './guards/auth.guard';
 
 @Controller('discord')
 export class DiscordController {
