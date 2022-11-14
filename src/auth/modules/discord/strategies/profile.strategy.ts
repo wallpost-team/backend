@@ -1,24 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { User } from '@prisma/client';
+import { DiscordProfile } from '@prisma/client';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+import authConfig from 'src/auth/auth.config';
 import { AUTH_STRATEGIES, SERVICES } from 'src/common';
-import { IUserService } from 'src/user/user.service.interface';
+import { AccessToken } from 'src/auth/types';
 
-import authConfig from '../auth.config';
-import { AccessToken } from '../types';
+import { IDiscordProfileService } from '../services/profile/profile.service.interface';
 
 @Injectable()
-export class AccessTokenStrategy extends PassportStrategy(
+export class DiscordProfileStrategy extends PassportStrategy(
   Strategy,
-  AUTH_STRATEGIES.JWT_ACCESS,
+  AUTH_STRATEGIES.DISCORD_PROFILE,
 ) {
   constructor(
     @Inject(authConfig.KEY) readonly config: ConfigType<typeof authConfig>,
-    @Inject(SERVICES.USER) private readonly user: IUserService,
+    @Inject(SERVICES.DISCORD_PROFILE)
+    private readonly discordProfile: IDiscordProfileService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -28,8 +29,7 @@ export class AccessTokenStrategy extends PassportStrategy(
     });
   }
 
-  async validate(accessToken: AccessToken): Promise<User> {
-    const user = await this.user.get({ id: accessToken.sub });
-    return user;
+  validate(accessToken: AccessToken): Promise<DiscordProfile> {
+    return this.discordProfile.validateDiscordProfile({ id: accessToken.sub });
   }
 }

@@ -2,7 +2,7 @@ import { Prisma, User } from '@prisma/client';
 
 export interface IUserService {
   create(data: Prisma.UserCreateInput): Promise<User>;
-  get(where: Prisma.UserWhereInput): Promise<User | never>;
+  get(where: Prisma.UserWhereInput): Promise<User>;
   find(where: Prisma.UserWhereUniqueInput): Promise<User | null>;
   update(
     where: Prisma.UserWhereUniqueInput,

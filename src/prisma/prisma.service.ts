@@ -30,4 +30,14 @@ export class PrismaService
   async onModuleDestroy() {
     await this.$disconnect();
   }
+
+  exclude<Model, Key extends keyof Model>(
+    obj: Model,
+    ...keys: Key[]
+  ): Omit<Model, Key> {
+    for (const key of keys) {
+      delete obj[key];
+    }
+    return obj;
+  }
 }

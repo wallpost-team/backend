@@ -1,12 +1,16 @@
-export type JwtPayload = {
+export type AccessTokenPayload = {
   sub: number;
 };
 
-export type Jwt = JwtPayload & {
+export type RefreshTokenPayload = AccessTokenPayload & {
+  jti: string;
+};
+
+type TokenBase = {
   iat: number;
   exp: number;
 };
 
-export type JwtToRefresh = Jwt & {
-  refreshToken: string;
-};
+export type AccessToken = AccessTokenPayload & TokenBase;
+
+export type RefreshToken = RefreshTokenPayload & TokenBase;

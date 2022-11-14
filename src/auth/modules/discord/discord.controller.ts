@@ -1,14 +1,13 @@
-import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Res, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { Response } from 'express';
+import { IAuthService } from 'src/auth/services/auth.service.interface';
 import { GetUser, SERVICES } from 'src/common';
 import { DiscordOAuth2Guard } from './discord.guard';
-import { IDiscordService } from './discord.service.interface';
 
 @Controller('discord')
 export class DiscordController {
-  constructor(
-    @Inject(SERVICES.DISCORD_AUTH) private readonly discord: IDiscordService,
-  ) {}
+  constructor(@Inject(SERVICES.AUTH) private readonly auth: IAuthService) {}
 
   @Get('redirect')
   @UseGuards(DiscordOAuth2Guard)
@@ -18,7 +17,11 @@ export class DiscordController {
 
   @Get('callback')
   @UseGuards(DiscordOAuth2Guard)
-  async callback(@GetUser() user: User) {
-    return this.discord.authenticate(user);
+  async callback(
+    @GetUser() user: User,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<User> {
+    await this.auth.authenticate(user.id, response);
+    return user;
   }
 }

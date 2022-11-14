@@ -8,13 +8,13 @@ import redisConfig from './redis.config';
 export class RedisService extends Client implements OnModuleDestroy {
   constructor(
     @Inject(redisConfig.KEY)
-    readonly config: ConfigType<typeof redisConfig>,
+    private readonly config: ConfigType<typeof redisConfig>,
   ) {
     super();
-    (async () => {
-      await this.open(config.url);
-    })();
+
+    this.open(this.config.url);
   }
+
   async onModuleDestroy() {
     await this.close();
   }

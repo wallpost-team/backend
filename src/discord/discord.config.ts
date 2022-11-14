@@ -2,7 +2,5 @@
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('discord', () => ({
-  clientID: process.env.DISCORD_CLIENT_ID!,
-  clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-  callbackUrl: process.env.DISCORD_CALLBACK_URL!,
+  token: process.env.DISCORD_TOKEN!,
 }));

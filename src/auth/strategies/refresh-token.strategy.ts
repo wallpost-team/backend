@@ -1,13 +1,16 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { User } from '@prisma/client';
 import { Request } from 'express';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { AUTH_STRATEGIES } from 'src/common';
+import { AUTH_STRATEGIES, SERVICES } from 'src/common';
+import { IUserService } from 'src/user/user.service.interface';
 
 import authConfig from '../auth.config';
-import { Jwt, JwtToRefresh } from '../types';
+import { TokensService } from '../services';
+import { RefreshToken } from '../types';
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(
@@ -16,24 +19,26 @@ export class RefreshTokenStrategy extends PassportStrategy(
 ) {
   constructor(
     @Inject(authConfig.KEY) readonly config: ConfigType<typeof authConfig>,
+    private readonly tokens: TokensService,
+    @Inject(SERVICES.USER) private readonly user: IUserService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request: Request) => request?.cookies?.Refresh,
+      ]),
       secretOrKey: config.jwtRefreshSecret,
-      passReqToCallback: true,
     });
   }
 
-  validate(req: Request, payload: Jwt): JwtToRefresh {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const refreshToken = req
-      .header('Authorization')!
-      .replace('Bearer', '')
-      .trim();
+  async validate(oldRefreshToken: RefreshToken): Promise<User> {
+    const oldRefreshTokenId = await this.tokens.getRefreshTokenId(
+      oldRefreshToken.jti,
+    );
 
-    return {
-      ...payload,
-      refreshToken,
-    };
+    if (!oldRefreshTokenId) throw new ForbiddenException('Access Denied.');
+
+    await this.tokens.deleteRefreshToken(oldRefreshTokenId);
+
+    return this.user.get({ id: oldRefreshToken.sub });
   }
 }

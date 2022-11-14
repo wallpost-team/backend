@@ -2,23 +2,22 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import Strategy, { Profile } from 'passport-discord';
-
 import { AUTH_STRATEGIES, SERVICES } from 'src/common';
 
-import discordConfig from './discord.config';
-import { IDiscordService } from './discord.service.interface';
+import discordAuthConfig from '../discordAuth.config';
+import { IDiscordAuthService } from '../services/auth/auth.service.interface';
 
 @Injectable()
 export class DiscordStrategy extends PassportStrategy(
   Strategy,
-  AUTH_STRATEGIES.DISCORD,
+  AUTH_STRATEGIES.DISCORD_OAUTH2,
 ) {
   constructor(
-    @Inject(discordConfig.KEY)
-    readonly config: ConfigType<typeof discordConfig>,
+    @Inject(discordAuthConfig.KEY)
+    readonly config: ConfigType<typeof discordAuthConfig>,
 
     @Inject(SERVICES.DISCORD_AUTH)
-    private readonly discordAuthService: IDiscordService,
+    private readonly discordAuth: IDiscordAuthService,
   ) {
     super({
       clientID: config.clientID,
@@ -28,15 +27,11 @@ export class DiscordStrategy extends PassportStrategy(
     });
   }
 
-  async validate(
-    discordAccessToken: string,
-    discordRefreshToken: string,
-    profile: Profile,
-  ) {
-    return this.discordAuthService.validateUser({
+  async validate(accessToken: string, refreshToken: string, profile: Profile) {
+    return this.discordAuth.validateDiscordAuth({
       discordId: profile.id,
-      discordAccessToken,
-      discordRefreshToken,
+      accessToken,
+      refreshToken,
     });
   }
 }

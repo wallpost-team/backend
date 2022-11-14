@@ -11,9 +11,15 @@ datasource db {
 }
 
 model User {
-  id                  Int     @id @default(autoincrement())
-  refreshToken        String?
-  discordId           String  @unique
-  discordAccessToken  String
-  discordRefreshToken String
+  id               Int            @id @default(autoincrement())
+  discordProfile   DiscordProfile @relation(fields: [discordProfileId], references: [id])
+  discordProfileId Int            @unique
+}
+
+model DiscordProfile {
+  id           Int    @id @default(autoincrement())
+  discordId    String @unique
+  accessToken  String
+  refreshToken String
+  user         User?
 }

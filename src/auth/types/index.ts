@@ -1,2 +1,7 @@
 export { SignedTokens } from './SignedTokens';
-export { JwtPayload, Jwt, JwtToRefresh } from './TokenPayload';
+export {
+  AccessTokenPayload,
+  AccessToken,
+  RefreshTokenPayload,
+  RefreshToken,
+} from './TokenPayload';
