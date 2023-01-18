@@ -1,4 +1,3 @@
-import refresh from 'passport-oauth2-refresh';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 
@@ -8,49 +7,54 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
 
 import { AppModule } from './app.module';
-import { DiscordStrategy } from './auth/modules/discord/strategies/auth.strategy';
-import { AUTH_STRATEGIES } from './common';
 
 async function configureSwagger(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('WallPost')
     .setDescription('The WallPost API description')
     .setVersion('1.0')
+    .addSecurity('Authorization', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'Authorization',
+    })
+    .addSecurity('Refresh', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'Authorization',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 }
 
-async function configureAuth(app: INestApplication) {
+async function configureAuth(app: INestApplication, config: ConfigService) {
+  const cookieSecret = config.getOrThrow<string>('app.cookieSecret');
   app.use(passport.initialize());
-  app.use(cookieParser());
+  app.use(cookieParser(cookieSecret));
   app.enableCors({
     origin: ['localhost:3000'],
     credentials: true,
   });
-
-  const discordStrategy = app.get(DiscordStrategy);
-  refresh.use(AUTH_STRATEGIES.DISCORD_OAUTH2, discordStrategy);
 }
 
-async function startApp(app: INestApplication) {
-  const configService = app.get(ConfigService);
-  const port = configService.getOrThrow<number>('app.port');
-
+async function startApp(app: INestApplication, config: ConfigService) {
+  const port = config.getOrThrow<number>('app.port');
   console.log(`Listening on port ${port}`);
   await app.listen(port);
 }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const config = app.get(ConfigService);
 
   app.setGlobalPrefix('api');
 
-  await configureAuth(app);
+  await configureAuth(app, config);
 
   await configureSwagger(app);
 
-  await startApp(app);
+  await startApp(app, config);
 }
 
 bootstrap();

@@ -5,5 +5,5 @@ export default registerAs('discordAuth', () => ({
   clientID: process.env.DISCORD_AUTH_CLIENT_ID!,
   clientSecret: process.env.DISCORD_AUTH_CLIENT_SECRET!,
   callbackUrl: process.env.DISCORD_AUTH_CALLBACK_URL!,
-  encryptionSecret: Buffer.from(process.env.DISCORD_ENCRYPTION_SECRET!),
+  encryptionSecret: Buffer.from(process.env.DISCORD_AUTH_ENCRYPTION_SECRET!),
 }));

@@ -8,7 +8,7 @@ import discordAuthConfig from '../discordAuth.config';
 import { IDiscordAuthService } from '../services/auth/auth.service.interface';
 
 @Injectable()
-export class DiscordStrategy extends PassportStrategy(
+export class DiscordAuthStrategy extends PassportStrategy(
   Strategy,
   AUTH_STRATEGIES.DISCORD_OAUTH2,
 ) {
@@ -28,10 +28,10 @@ export class DiscordStrategy extends PassportStrategy(
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    return this.discordAuth.validateDiscordAuth({
-      discordId: profile.id,
-      accessToken,
-      refreshToken,
-    });
+    // return this.discordAuth.upsertProfile({
+    //   discordId: profile.id,
+    //   accessToken,
+    //   refreshToken,
+    // });
   }
 }

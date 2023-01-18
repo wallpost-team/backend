@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
@@ -8,7 +8,7 @@ import { UserModule } from 'src/user/user.module';
 import { RedisModule } from 'src/redis/redis.module';
 
 import authConfig from './auth.config';
-import { DiscordModule, SocialProvidersModule } from './modules';
+import { DiscordAuthModule, SocialProvidersModule } from './modules';
 import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 import { authProvider } from './services/auth.service';
 import { AuthController } from './auth.controller';
@@ -20,12 +20,12 @@ import { TokensService } from './services/tokens.service';
     RouterModule.register([
       {
         path: 'auth',
-        children: [DiscordModule, SocialProvidersModule],
+        children: [DiscordAuthModule, SocialProvidersModule],
       },
     ]),
     PassportModule.register({}),
     JwtModule.register({}),
-    DiscordModule,
+    forwardRef(() => DiscordAuthModule),
     SocialProvidersModule,
     UserModule,
     RedisModule,

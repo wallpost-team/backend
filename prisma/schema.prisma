@@ -19,7 +19,6 @@ model User {
 model DiscordProfile {
   id           Int    @id @default(autoincrement())
   discordId    String @unique
-  accessToken  String
-  refreshToken String
+  tokenDetails String
   user         User?
 }

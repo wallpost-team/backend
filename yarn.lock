@@ -397,6 +397,23 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@hapi/boom@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.npmjs.org/@hapi/boom/-/boom-10.0.0.tgz"
+  integrity sha512-1YVs9tLHhypBqqinKQRqh7FUERIolarQApO37OWkzD+z6y6USi871Sv746zBPKcIOBuI6g6y4FrwX87mmJ90Gg==
+  dependencies:
+    "@hapi/hoek" "10.x.x"
+
+"@hapi/bourne@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/@hapi/bourne/-/bourne-3.0.0.tgz"
+  integrity sha512-Waj1cwPXJDucOib4a3bAISsKJVb15MKi9IvmTI/7ssVEm6sywXGjVJDhl6/umt1pK1ZS7PacXU3A1PmFKHEZ2w==
+
+"@hapi/hoek@10.x.x", "@hapi/hoek@^10.0.0", "@hapi/hoek@^10.0.1":
+  version "10.0.1"
+  resolved "https://registry.npmjs.org/@hapi/hoek/-/hoek-10.0.1.tgz"
+  integrity sha512-CvlW7jmOhWzuqOqiJQ3rQVLMcREh0eel4IBnxDx2FAcK8g7qoJRQK4L1CPBASoCY6y8e6zuCy3f2g+HWdkzcMw==
+
 "@hapi/hoek@^9.0.0":
   version "9.3.0"
   resolved "https://registry.npmjs.org/@hapi/hoek/-/hoek-9.3.0.tgz"
@@ -408,6 +425,15 @@
   integrity sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==
   dependencies:
     "@hapi/hoek" "^9.0.0"
+
+"@hapi/wreck@^18.0.0":
+  version "18.0.0"
+  resolved "https://registry.npmjs.org/@hapi/wreck/-/wreck-18.0.0.tgz"
+  integrity sha512-Yk9STxoM06Hjjq58cH0KFG91u9F2h9eVE72o8vUr3AfK80qt7I2POG5+cDGTEntbnvvzm0ERow2sjG3QsqCWUA==
+  dependencies:
+    "@hapi/boom" "^10.0.0"
+    "@hapi/bourne" "^3.0.0"
+    "@hapi/hoek" "^10.0.0"
 
 "@humanwhocodes/config-array@^0.10.5":
   version "0.10.7"
@@ -856,27 +882,39 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
+"@ogma/common@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@ogma/common/-/common-1.0.0.tgz"
+  integrity sha512-IXvSnXbXccpxJR+UbN2fxp30R/44VFpx/T0ungb1PMwLa9BLmtbeQIXqc9TR11gRaDNY0e78tqVckau8oyXK0A==
+
+"@ogma/styler@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@ogma/styler/-/styler-1.0.0.tgz"
+  integrity sha512-Twtijg2eUS4HEPyic0FEpkdJgRtLSvVow/3gmLsMkyU+GhSm80PnRlc6q1N1rmf1EQhuwGZLKhS30sYIuFV38A==
+  dependencies:
+    "@ogma/common" "1.0.0"
+
 "@phc/format@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@phc/format/-/format-1.0.0.tgz"
   integrity sha512-m7X9U6BG2+J+R1lSOdCiITLLrxm+cWlNI3HUFA92oLO77ObGNzaKdh8pMLqdZcshtkKuV84olNNXDfMc4FezBQ==
 
-"@prisma/client@^4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.5.0.tgz#f708549bee3da396d5741d846b4e4306b120210c"
-  integrity sha512-B2cV0OPI1smhdYUxsJoLYQLoMlLH06MUxgFUWQnHodGMX98VRVXKmQE/9OcrTNkqtke5RC+YU24Szxd04tZA2g==
+"@prisma/client@^4.7.1":
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.7.1.tgz#66fe84aca25de17cb3d9141dec003f34714914b9"
+  integrity sha512-/GbnOwIPtjiveZNUzGXOdp7RxTEkHL4DZP3vBaFNadfr6Sf0RshU5EULFzVaSi9i9PIK9PYd+1Rn7z2B2npb9w==
   dependencies:
-    "@prisma/engines-version" "4.5.0-43.0362da9eebca54d94c8ef5edd3b2e90af99ba452"
+    "@prisma/engines-version" "4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c"
 
-"@prisma/engines-version@4.5.0-43.0362da9eebca54d94c8ef5edd3b2e90af99ba452":
-  version "4.5.0-43.0362da9eebca54d94c8ef5edd3b2e90af99ba452"
-  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.5.0-43.0362da9eebca54d94c8ef5edd3b2e90af99ba452.tgz#5b7fae294ee9bd9790d0e7b7a0b0912e4222ac08"
-  integrity sha512-o7LyVx8PPJBLrEzLl6lpxxk2D5VnlM4Fwmrbq0NoT6pr5aa1OuHD9ZG+WJY6TlR/iD9bhmo2LNcxddCMr5Rv2A==
+"@prisma/engines-version@4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c":
+  version "4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.7.1-1.272861e07ab64f234d3ffc4094e32bd61775599c.tgz#43ff7d85478e64a1d790e4d53e78768a2acfacfe"
+  integrity sha512-Bd4LZ+WAnUHOq31e9X/ihi5zPlr4SzTRwUZZYxvWOxlerIZ7HJlVa9zXpuKTKLpI9O1l8Ec4OYCKsivWCs5a3Q==
 
-"@prisma/engines@4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-4.5.0.tgz#82df347a893a5ae2a67707d44772ba181f4b9328"
-  integrity sha512-4t9ir2SbQQr/wMCNU4YpHWp5hU14J2m3wHUZnGJPpmBF8YtkisxyVyQsKd1e6FyLTaGq8LOLhm6VLYHKqKNm+g==
+"@prisma/engines@4.7.1":
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-4.7.1.tgz#d657d4d05724158140022fa00614e143643090c2"
+  integrity sha512-zWabHosTdLpXXlMefHmnouhXMoTB1+SCbUU3t4FCmdrtIOZcarPKU3Alto7gm/pZ9vHlGOXHCfVZ1G7OIrSbog==
 
 "@redis/bloom@1.0.2":
   version "1.0.2"
@@ -1146,10 +1184,10 @@
   resolved "https://registry.npmjs.org/@types/mime/-/mime-3.0.1.tgz"
   integrity sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==
 
-"@types/node@*", "@types/node@^16.0.0":
-  version "16.11.65"
-  resolved "https://registry.npmjs.org/@types/node/-/node-16.11.65.tgz"
-  integrity sha512-Vfz7wGMOr4jbQGiQHVJm8VjeQwM9Ya7mHe9LtQ264/Epf5n1KiZShOFqk++nBzw6a/ubgYdB9Od7P+MH/LjoWw==
+"@types/node@*", "@types/node@^18.11.10":
+  version "18.11.10"
+  resolved "https://registry.npmjs.org/@types/node/-/node-18.11.10.tgz"
+  integrity sha512-juG3RWMBOqcOuXC643OAdSA525V44cVgGV6dUDuiFtss+8Fk5x1hI93Rsld43VeJVIeqlP9I7Fn9/qaVqoEAuQ==
 
 "@types/oauth@*":
   version "0.9.1"
@@ -1183,7 +1221,7 @@
 
 "@types/passport-oauth2-refresh@^1.1.1":
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@types/passport-oauth2-refresh/-/passport-oauth2-refresh-1.1.1.tgz#cbe466d4fcac36182fd75bf55279c0b1e953c382"
+  resolved "https://registry.npmjs.org/@types/passport-oauth2-refresh/-/passport-oauth2-refresh-1.1.1.tgz"
   integrity sha512-Tw0JvfDPv9asgFPACd9oOGCaD/0/Uyi+QF7fmrJC74cJKC6I8N8wwhJJHyfd1N2E/qaLgTh431lhOa9jicpNdg==
   dependencies:
     "@types/oauth" "*"
@@ -1235,6 +1273,11 @@
   dependencies:
     "@types/mime" "*"
     "@types/node" "*"
+
+"@types/simple-oauth2@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@types/simple-oauth2/-/simple-oauth2-4.1.1.tgz#7c2326cb4c5f967d8283c8c71b98769885ad6dfd"
+  integrity sha512-8jqhfUFb0FoCl2Od4czprB7ubM8/Fuo3tg+vQZ00zYtPcNLogGyDgm2DVfVvD3NYXK7AscKOXSaW33NHUWpNBg==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.1"
@@ -3568,6 +3611,17 @@ joi@^17.6.3:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
+joi@^17.6.4:
+  version "17.7.0"
+  resolved "https://registry.npmjs.org/joi/-/joi-17.7.0.tgz"
+  integrity sha512-1/ugc8djfn93rTE3WRKdCzGGt/EtiYKxITMO4Wiv6q5JL1gl9ePt4kBsl1S499nbosspfctIQTpYIhSmHA3WAg==
+  dependencies:
+    "@hapi/hoek" "^9.0.0"
+    "@hapi/topo" "^5.0.0"
+    "@sideway/address" "^4.1.3"
+    "@sideway/formula" "^3.0.0"
+    "@sideway/pinpoint" "^2.0.0"
+
 js-sdsl@^4.1.4:
   version "4.1.5"
   resolved "https://registry.npmjs.org/js-sdsl/-/js-sdsl-4.1.5.tgz"
@@ -3952,6 +4006,11 @@ mute-stream@0.0.8:
   resolved "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.8.tgz"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
+nanoid@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.4.tgz"
+  integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
+
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
@@ -3966,6 +4025,13 @@ neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+nestjs-spelunker@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/nestjs-spelunker/-/nestjs-spelunker-1.1.3.tgz"
+  integrity sha512-zykE4PRqV/jf0UkgjW6KQC7Zrvgj87MbF9T+9jZs74R4Z/zaYwNlMIMHy3hmS8r6okhGIz7PAF0I2JBYR6HXeA==
+  dependencies:
+    "@ogma/styler" "^1.0.0"
 
 node-abort-controller@^3.0.1:
   version "3.0.1"
@@ -4183,7 +4249,7 @@ passport-jwt@^4.0.0:
 
 passport-oauth2-refresh@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/passport-oauth2-refresh/-/passport-oauth2-refresh-2.1.0.tgz#c31cd133826383f5539d16ad8ab4f35ca73ce4a4"
+  resolved "https://registry.npmjs.org/passport-oauth2-refresh/-/passport-oauth2-refresh-2.1.0.tgz"
   integrity sha512-4ML7ooCESCqiTgdDBzNUFTBcPR8zQq9iM6eppEUGMMvLdsjqRL93jKwWm4Az3OJcI+Q2eIVyI8sVRcPFvxcF/A==
 
 passport-oauth2@^1.5.0:
@@ -4310,12 +4376,12 @@ pretty-format@^28.0.0, pretty-format@^28.1.3:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
-prisma@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/prisma/-/prisma-4.5.0.tgz#361ae3f4476d0821b97645e5da42975a7c2943bb"
-  integrity sha512-9Aeg4qiKlv9Wsjz4NO8k2CzRzlvS3A4FYVJ5+28sBBZ0eEwbiVOE/Jj7v6rZC1tFW2s4GSICQOAyuOjc6WsNew==
+prisma@^4.7.1:
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-4.7.1.tgz#0a1beac26abdc4421e496b75eb50413f3ee3b0ba"
+  integrity sha512-CCQP+m+1qZOGIZlvnL6T3ZwaU0LAleIHYFPN9tFSzjs/KL6vH9rlYbGOkTuG9Q1s6Ki5D0LJlYlW18Z9EBUpGg==
   dependencies:
-    "@prisma/engines" "4.5.0"
+    "@prisma/engines" "4.7.1"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -4683,6 +4749,16 @@ signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3, signal-exit@^3.0.7:
   version "3.0.7"
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
+
+simple-oauth2@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/simple-oauth2/-/simple-oauth2-5.0.0.tgz"
+  integrity sha512-8291lo/z5ZdpmiOFzOs1kF3cxn22bMj5FFH+DNUppLJrpoIlM1QnFiE7KpshHu3J3i21TVcx4yW+gXYjdCKDLQ==
+  dependencies:
+    "@hapi/hoek" "^10.0.1"
+    "@hapi/wreck" "^18.0.0"
+    debug "^4.3.4"
+    joi "^17.6.4"
 
 sisteransi@^1.0.5:
   version "1.0.5"
