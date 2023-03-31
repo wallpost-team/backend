@@ -5,13 +5,14 @@ import {
 
 export interface IDiscordApiService {
   getUser(tokenDetails: string): Promise<RESTGetAPICurrentUserResult>;
-  getUserGuilds(
+  getGuilds(tokenDetails: string): Promise<{
+    manageable: RESTGetAPICurrentUserGuildsResult;
+    inviteable: RESTGetAPICurrentUserGuildsResult;
+  }>;
+  getManageableGuilds(
     tokenDetails: string,
   ): Promise<RESTGetAPICurrentUserGuildsResult>;
-
-  getBotGuilds(): Promise<RESTGetAPICurrentUserGuildsResult>;
-
-  getCommonGuilds(
+  getInviteableGuilds(
     tokenDetails: string,
   ): Promise<RESTGetAPICurrentUserGuildsResult>;
 }

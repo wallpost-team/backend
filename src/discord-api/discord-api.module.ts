@@ -7,13 +7,18 @@ import discordConfig from './discord-api.config';
 import { DiscordApiController } from './discord-api.controller';
 import { discordApiProvider } from './services/api/api.service';
 import { discordApiClientProvider } from './services/client/client.service';
+import { discordApiProviderProvider } from './services/provider/provider.service';
 
 @Module({
   imports: [
     forwardRef(() => DiscordAuthModule),
     ConfigModule.forFeature(discordConfig),
   ],
-  providers: [discordApiProvider, discordApiClientProvider],
+  providers: [
+    discordApiProvider,
+    discordApiClientProvider,
+    discordApiProviderProvider,
+  ],
   controllers: [DiscordApiController],
   exports: [discordApiProvider, discordApiClientProvider],
 })

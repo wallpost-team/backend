@@ -19,12 +19,18 @@ export class DiscordApiController {
   @Get('user/guilds')
   @UseGuards(DiscordProfileGuard)
   getUserGuilds(@GetUser() discordProfile: DiscordProfile) {
-    return this.discord.getUserGuilds(discordProfile.tokenDetails);
+    return this.discord.getGuilds(discordProfile.tokenDetails);
   }
 
-  @Get('user/guilds/common')
+  @Get('user/guilds/manageable')
   @UseGuards(DiscordProfileGuard)
-  getUserGuildsCommon(@GetUser() discordProfile: DiscordProfile) {
-    return this.discord.getCommonGuilds(discordProfile.tokenDetails);
+  getUserGuildsManageable(@GetUser() discordProfile: DiscordProfile) {
+    return this.discord.getManageableGuilds(discordProfile.tokenDetails);
+  }
+
+  @Get('user/guilds/inviteable')
+  @UseGuards(DiscordProfileGuard)
+  getUserGuildsInviteable(@GetUser() discordProfile: DiscordProfile) {
+    return this.discord.getInviteableGuilds(discordProfile.tokenDetails);
   }
 }

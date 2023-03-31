@@ -11,6 +11,7 @@ import { EncryptionModule } from './encryption/encryption.module';
 import validationSchema from './validation.schema';
 import appConfig from './app.config';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { GuildModule } from './guild/guild.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
     RedisModule,
     DiscordApiModule,
     EncryptionModule,
+    GuildModule,
   ],
 })
 export class AppModule implements NestModule {

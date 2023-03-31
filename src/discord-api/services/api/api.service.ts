@@ -1,75 +1,88 @@
 import { Inject, Injectable, Provider } from '@nestjs/common';
 import {
+  PermissionFlagsBits,
   RESTGetAPICurrentUserGuildsResult,
-  RESTGetAPICurrentUserResult,
 } from 'discord-api-types/v10';
 
 import { SERVICES } from 'src/common';
 
 import { IDiscordApiService } from './api.service.interface';
-import { IDiscordApiClientService } from '../client/client.service.interface';
-import { IDiscordAuthService } from 'src/auth/modules/discord/services/auth/auth.service.interface';
-import { AccessToken } from 'simple-oauth2';
-import { UserRequestOptions } from '../utils';
-import { CDN } from '@discordjs/rest';
+import { IDiscordApiProviderService } from '../provider/provider.service.interface';
 
 @Injectable()
 export class DiscordApiService implements IDiscordApiService {
   constructor(
-    @Inject(SERVICES.DISCORD_API_CLIENT)
-    private readonly client: IDiscordApiClientService,
-    @Inject(SERVICES.DISCORD_AUTH)
-    private readonly discordAuth: IDiscordAuthService,
+    @Inject(SERVICES.DISCORD_API_PROVIDER)
+    private readonly apiProvider: IDiscordApiProviderService,
   ) {}
 
-  async getUser(tokenDetails: string) {
-    return this.client.rest.get(
-      this.client.Routes.user(),
-      await this.prepareUserRequestOptions(tokenDetails),
-    ) as Promise<RESTGetAPICurrentUserResult>;
+  getUser(tokenDetails: string) {
+    return this.apiProvider.getUser(tokenDetails);
   }
 
-  async getUserGuilds(tokenDetails: string) {
-    return this.client.rest.get(
-      this.client.Routes.userGuilds(),
-      await this.prepareUserRequestOptions(tokenDetails),
-    ) as Promise<RESTGetAPICurrentUserGuildsResult>;
+  async getGuilds(userTokenDetails: string) {
+    const guilds = await this.fetchGuilds(userTokenDetails);
+    const manageable = this.matchUserToBotGuilds(
+      guilds,
+      this.matchManageableGuilds,
+    );
+    const inviteable = this.matchUserToBotGuilds(
+      guilds,
+      this.matchInviteableGuilds,
+    );
+    return { manageable, inviteable };
   }
 
-  getBotGuilds() {
-    return this.client.rest.get(
-      this.client.Routes.userGuilds(),
-    ) as Promise<RESTGetAPICurrentUserGuildsResult>;
+  async getManageableGuilds(userTokenDetails: string) {
+    const guilds = await this.fetchGuilds(userTokenDetails);
+    return this.matchUserToBotGuilds(guilds, this.matchManageableGuilds);
   }
 
-  async getCommonGuilds(tokenDetails: string) {
-    const [userGuilds, botGuilds] = await Promise.all([
-      this.getUserGuilds(tokenDetails),
-      this.getBotGuilds(),
+  private matchManageableGuilds: UserToBotGuildsPredicate = (u, b) => u === b;
+
+  async getInviteableGuilds(userTokenDetails: string) {
+    const guilds = await this.fetchGuilds(userTokenDetails);
+    return this.matchUserToBotGuilds(guilds, this.matchInviteableGuilds);
+  }
+
+  private matchInviteableGuilds: UserToBotGuildsPredicate = (u, b) => u !== b;
+
+  private async fetchUserGuildsWhereAdmin(tokenDetails: string) {
+    const userGuilds = await this.apiProvider.getUserGuilds(tokenDetails);
+    const userGuildsWhereAdmin = userGuilds.filter(
+      ({ permissions }) =>
+        (BigInt(permissions) & PermissionFlagsBits.Administrator) ===
+        PermissionFlagsBits.Administrator,
+    );
+    return userGuildsWhereAdmin;
+  }
+
+  private async fetchGuilds(userTokenDetails: string) {
+    const [userGuildsWhereAdmin, botGuilds] = await Promise.all([
+      this.fetchUserGuildsWhereAdmin(userTokenDetails),
+      this.apiProvider.getBotGuilds(),
     ]);
+    return { userGuildsWhereAdmin, botGuilds };
+  }
 
-    const commonGuilds = userGuilds.filter((userGuild) =>
-      botGuilds.some((botGuild) => userGuild.id === botGuild.id),
+  private matchUserToBotGuilds(
+    guilds: {
+      userGuildsWhereAdmin: RESTGetAPICurrentUserGuildsResult;
+      botGuilds: RESTGetAPICurrentUserGuildsResult;
+    },
+    predicate: UserToBotGuildsPredicate,
+  ) {
+    const commonGuilds = guilds.userGuildsWhereAdmin.filter((userGuild) =>
+      guilds.botGuilds.some((botGuild) => predicate(userGuild.id, botGuild.id)),
     );
     return commonGuilds;
   }
-
-  private async prepareUserRequestOptions(encryptedTokenDetails: string) {
-    const tokenDetails = await this.discordAuth.decryptTokenDetails(
-      encryptedTokenDetails,
-    );
-    return this.prepareUserRequestOptionsUnencrypted(tokenDetails);
-  }
-
-  private async prepareUserRequestOptionsUnencrypted(
-    tokenDetails: AccessToken,
-  ) {
-    if (tokenDetails.expired()) {
-      tokenDetails = await this.discordAuth.refresh(tokenDetails);
-    }
-    return UserRequestOptions(tokenDetails);
-  }
 }
+
+type UserToBotGuildsPredicate = (
+  userGuildId: string,
+  botGuildId: string,
+) => boolean;
 
 export const discordApiProvider: Provider = {
   provide: SERVICES.DISCORD_API,

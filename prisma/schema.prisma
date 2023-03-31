@@ -22,3 +22,45 @@ model DiscordProfile {
   tokenDetails String
   user         User?
 }
+
+model Guild {
+  id       String    @id
+  joinedOn DateTime  @default(now())
+  channels Channel[]
+}
+
+model Channel {
+  id            String         @id
+  guild         Guild          @relation(fields: [guildId], references: [id])
+  guildId       String
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id        String  @id @default(uuid())
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId String
+  wall      Wall    @relation(fields: [wallId], references: [id])
+  wallId    String
+}
+
+enum Provider {
+  VKONTAKTE
+}
+
+model Wall {
+  id             String         @id @default(uuid())
+  providerWallId String
+  provider       Provider
+  subscriptions  Subscription[]
+  posts          Post[]
+
+  @@unique([providerWallId, provider])
+}
+
+model Post {
+  id             String @id @default(uuid())
+  providerPostId String
+  wall           Wall   @relation(fields: [wallId], references: [id])
+  wallId         String
+}
