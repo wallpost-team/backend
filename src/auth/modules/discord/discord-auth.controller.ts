@@ -3,9 +3,11 @@ import { Response } from 'express';
 import { IAuthService } from 'src/auth/services/auth.service.interface';
 import { SERVICES, SignedCookie } from 'src/common';
 import { IDiscordAuthService } from './services/auth/auth.service.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth', 'Discord')
 @Controller('discord')
-export class DiscordController {
+export class DiscordAuthController {
   constructor(
     @Inject(SERVICES.AUTH) private readonly auth: IAuthService,
     @Inject(SERVICES.DISCORD_AUTH)
@@ -14,7 +16,7 @@ export class DiscordController {
 
   @Get('redirect')
   @Redirect()
-  async redirect(@Res({ passthrough: true }) response: Response) {
+  redirect(@Res({ passthrough: true }) response: Response) {
     return { url: this.discordAuth.getAuthorizationUri(response) };
   }
 
@@ -27,7 +29,7 @@ export class DiscordController {
   ) {
     const discordProfile = await this.discordAuth.authenticate(query, cookies);
     await this.auth.authenticate(discordProfile.user.id, response);
-    return { url: 'http://localhost:3000/api/auth/discord/okay' };
+    return { url: this.discordAuth.getOkayUri() };
   }
 
   @Get('okay')

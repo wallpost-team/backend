@@ -11,7 +11,6 @@ export class AuthService implements IAuthService {
   constructor(private readonly tokens: TokensService) {}
 
   authenticate(sub: number, response: Response): Promise<void> {
-    console.log(sub);
     return this.tokens.setNewTokens(sub, response);
   }
 

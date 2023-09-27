@@ -4,14 +4,11 @@ import {
   NotFoundException,
   Provider,
 } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
 import { DiscordProfile, Prisma } from '@prisma/client';
 import { AccessToken } from 'simple-oauth2';
-import { User } from '@prisma/client';
 import { SERVICES } from 'src/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
-import discordAuthConfig from '../../discordAuth.config';
 import { IDiscordAuthService } from '../auth/auth.service.interface';
 import { IDiscordProfileService } from './profile.service.interface';
 import { UserDiscordProfile } from '../types';
@@ -19,8 +16,6 @@ import { UserDiscordProfile } from '../types';
 @Injectable()
 export class DiscordProfileService implements IDiscordProfileService {
   constructor(
-    @Inject(discordAuthConfig.KEY)
-    private readonly config: ConfigType<typeof discordAuthConfig>,
     private readonly prisma: PrismaService,
     @Inject(SERVICES.DISCORD_AUTH)
     private readonly discordAuth: IDiscordAuthService,

@@ -15,6 +15,8 @@ export interface IDiscordAuthService {
   ): Promise<UserDiscordProfile>;
   refresh(tokenDetails: AccessToken): Promise<AccessToken>;
 
+  getOkayUri(): string;
+
   encryptTokenDetails(tokenDetails: AccessToken): Promise<string>;
   decryptTokenDetails(tokenDetails: string): Promise<AccessToken>;
 }

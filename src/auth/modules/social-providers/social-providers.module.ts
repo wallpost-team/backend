@@ -1,14 +1,7 @@
 import { Module } from '@nestjs/common';
-import { RouterModule } from '@nestjs/core';
+import { VkModule } from './modules';
 
 @Module({
-  imports: [
-    RouterModule.register([
-      {
-        path: 'social-providers',
-        children: [],
-      },
-    ]),
-  ],
+  imports: [VkModule],
 })
 export class SocialProvidersModule {}

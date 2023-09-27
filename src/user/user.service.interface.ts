@@ -1,4 +1,6 @@
 import { Prisma, User } from '@prisma/client';
+import { z } from 'nestjs-zod/z';
+import { Wall } from 'src/vk-api/entities';
 
 export interface IUserService {
   create(data: Prisma.UserCreateInput): Promise<User>;
@@ -13,4 +15,6 @@ export interface IUserService {
     update: Prisma.UserUpdateInput,
     where: Prisma.UserWhereUniqueInput,
   ): Promise<User>;
+
+  listSocialProfiles(user: User): Promise<z.infer<typeof Wall>[]>;
 }

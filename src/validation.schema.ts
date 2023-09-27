@@ -10,14 +10,16 @@ export default Joi.object({
   AUTH_JWT_REFRESH_SECRET: Joi.string().required(),
   AUTH_JWT_REFRESH_TTL: Joi.number().default(1209600), // 2 weeks
 
-  DISCORD_AUTH_ENCRYPTION_SECRET: Joi.string(),
-
   POSTGRES_URL: Joi.string().required(),
   REDIS_URL: Joi.string().required(),
 
   DISCORD_AUTH_CLIENT_ID: Joi.number().unsafe().required(),
   DISCORD_AUTH_CLIENT_SECRET: Joi.string().required(),
-  DISCORD_AUTH_CALLBACK_URL: Joi.string().uri().required(),
+  DISCORD_AUTH_ENCRYPTION_SECRET: Joi.string(),
 
   DISCORD_API_TOKEN: Joi.string().required(),
+
+  VK_AUTH_CLIENT_ID: Joi.number().unsafe().required(),
+  VK_AUTH_CLIENT_SECRET: Joi.string().required(),
+  VK_AUTH_ENCRYPTION_SECRET: Joi.string(),
 });

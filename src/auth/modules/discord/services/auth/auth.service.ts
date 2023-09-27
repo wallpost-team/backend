@@ -10,7 +10,6 @@ import { ConfigType } from '@nestjs/config';
 import { AccessToken, AuthorizationCode } from 'simple-oauth2';
 import { Response } from 'express';
 import { nanoid } from 'nanoid';
-import { RESTGetAPICurrentUserResult } from 'discord-api-types/v10';
 
 import appConfig from 'src/app.config';
 import { SERVICES } from 'src/common';
@@ -23,8 +22,7 @@ import {
 import discordAuthConfig from '../../discordAuth.config';
 import { IDiscordAuthService } from './auth.service.interface';
 import { IDiscordProfileService } from '../profile/profile.service.interface';
-import { IDiscordApiClientService } from 'src/discord-api/services/client/client.service.interface';
-import { UserRequestOptions } from 'src/discord-api/services/utils';
+import { DiscordApi } from 'src/discord-api/discord-api.service';
 
 @Injectable()
 export class DiscordAuthService implements IDiscordAuthService {
@@ -33,8 +31,6 @@ export class DiscordAuthService implements IDiscordAuthService {
     private readonly authConfig: ConfigType<typeof discordAuthConfig>,
     @Inject(appConfig.KEY)
     private readonly appConf: ConfigType<typeof appConfig>,
-    @Inject(SERVICES.DISCORD_API_CLIENT)
-    private readonly discordApiClient: IDiscordApiClientService,
     @Inject(forwardRef(() => SERVICES.DISCORD_PROFILE))
     private readonly discordProfile: IDiscordProfileService,
     private readonly encryption: EncryptionService,
@@ -53,10 +49,11 @@ export class DiscordAuthService implements IDiscordAuthService {
     },
   });
 
-  private readonly redirectUri = `${this.appConf.host}:${this.appConf.port}/api/auth/discord/callback`;
+  private readonly baseUri = `${this.appConf.host}:${this.appConf.port}/api/auth/discord`;
+
+  private readonly redirectUri = `${this.baseUri}/callback`;
 
   getAuthorizationUri(response: Response) {
-    const redirect_uri = `${this.appConf.host}:${this.appConf.port}/api/auth/discord/callback`;
     const state = nanoid();
 
     response.cookie('DiscordAuthState', state, {
@@ -65,7 +62,7 @@ export class DiscordAuthService implements IDiscordAuthService {
     });
 
     return this.client.authorizeURL({
-      redirect_uri,
+      redirect_uri: this.redirectUri,
       scope: ['identify', 'guilds'],
       state,
     });
@@ -88,6 +85,10 @@ export class DiscordAuthService implements IDiscordAuthService {
     const discordUser = await this.getDiscordUser(refreshedTokenDetails);
     await this.discordProfile.save(discordUser.id, refreshedTokenDetails);
     return refreshedTokenDetails;
+  }
+
+  getOkayUri(): string {
+    return `${this.baseUri}/okay`;
   }
 
   encryptTokenDetails(tokenDetails: AccessToken) {
@@ -136,10 +137,7 @@ export class DiscordAuthService implements IDiscordAuthService {
   }
 
   private getDiscordUser(tokenDetails: AccessToken) {
-    return this.discordApiClient.rest.get(
-      this.discordApiClient.Routes.user(),
-      UserRequestOptions(tokenDetails),
-    ) as Promise<RESTGetAPICurrentUserResult>;
+    return new DiscordApi(tokenDetails.token.access_token).getUser();
   }
 
   private async refreshToken(tokenDetails: AccessToken) {

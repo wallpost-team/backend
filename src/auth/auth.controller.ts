@@ -4,8 +4,9 @@ import { IAuthService } from './services/auth.service.interface';
 import { RefreshTokenGuard } from './guards';
 import { User } from '@prisma/client';
 import { Response } from 'express';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(@Inject(SERVICES.AUTH) private readonly auth: IAuthService) {}

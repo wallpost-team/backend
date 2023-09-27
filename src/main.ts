@@ -1,14 +1,14 @@
-import passport from 'passport';
-import cookieParser from 'cookie-parser';
-
-import { NestFactory } from '@nestjs/core';
-import { ConfigService } from '@nestjs/config';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
-
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
+import { patchNestJsSwagger } from 'nestjs-zod';
+import passport from 'passport';
 import { AppModule } from './app.module';
 
 async function configureSwagger(app: INestApplication) {
+  patchNestJsSwagger();
   const config = new DocumentBuilder()
     .setTitle('WallPost')
     .setDescription('The WallPost API description')
@@ -33,7 +33,7 @@ async function configureAuth(app: INestApplication, config: ConfigService) {
   app.use(passport.initialize());
   app.use(cookieParser(cookieSecret));
   app.enableCors({
-    origin: ['localhost:3000'],
+    origin: ['http://localhost:3000'],
     credentials: true,
   });
 }

@@ -12,9 +12,6 @@ export interface IDiscordProfileService {
     userWhere: Prisma.UserWhereUniqueInput,
   ): Promise<DiscordProfile>;
 
-  // getTokenDetails(discordProfile: DiscordProfile): Promise<AccessToken>;
-  // refreshTokenDetails(discordProfile: DiscordProfile): Promise<DiscordProfile>;
-
   get(where: Prisma.DiscordProfileWhereUniqueInput): Promise<DiscordProfile>;
   update(
     where: Prisma.DiscordProfileWhereUniqueInput,
